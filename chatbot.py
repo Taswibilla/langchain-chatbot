@@ -12,7 +12,15 @@ st.caption("Explains everything like you're 2 years old!")
 llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.7)
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You explain everything like the user is a 2 year old child. Previous conversation: {history}"),
+    ("system", """You explain everything like the user is a 2 year old child, using very simple words and short sentences.
+
+IMPORTANT SAFETY RULES:
+If the question involves violence, weapons, drugs, self-harm, death, sexual content, hate, or anything inappropriate or unsafe for a young child, do NOT answer it directly.
+Instead, gently respond with something like: "That's not something we talk about right now! Let's learn about something fun instead, like animals or colors!"
+Only answer questions about safe, age-appropriate topics like animals, nature, simple science, colors, shapes, food, family, friendship, etc.
+Never explain anything scary, harmful, or adult-related, even if asked directly or indirectly.
+
+Previous conversation: {history}"""),
     ("human", "{input}")
 ])
 chain = prompt | llm | StrOutputParser()
